@@ -1,2 +1,10 @@
 bin
 .vscode
+.settings
+.classpath
+.project
+pom.xml
+.breakpoints
+*.jar
+*.replit
+*.nix

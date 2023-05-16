@@ -21,7 +21,8 @@ import lib.KeyBoard;
 */
 public class Game extends JPanel{
     // Class variables
-    private ArrayList<GameComponent> components = new ArrayList<GameComponent>();
+    private ArrayList<GameScene> scenes = new ArrayList<GameScene>();
+		private GameScene currentScene;
     private int[] windowSize = {100,100};
     private JFrame window;
     private Color windowBackGroundColor = new Color(255,255,255);
@@ -40,17 +41,20 @@ public class Game extends JPanel{
      * @param text The text of the window
      */
     public Game(String text){
-        window = new JFrame(text);
+			window = new JFrame(text);
 
-        // Start logging key strokes
-        keyBoard = new KeyBoard(window);
-        keyBoard.run();
+			// Start logging key strokes
+			keyBoard = new KeyBoard(window);
+			keyBoard.run();
 
-        // Boiler plate JFrame setup
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(windowSize[0],windowSize[1]);
-		window.add(this);
-		window.setVisible(true);
+			// Set current scene
+			currentScene = scenes.get(0);
+
+			// Boiler plate JFrame setup
+			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			window.setSize(windowSize[0],windowSize[1]);
+			window.add(this);
+			window.setVisible(true);
     } 
 
     /** Creates a game that has a window size of the dimensions passed
@@ -64,20 +68,20 @@ public class Game extends JPanel{
 
     /**Constructs a game with the passed objects
      * 
-     * @param component The list of component the game will be constructed with
+     * @param scene The level the game will start with
     */
-    public Game(GameComponent component){
-        components.add(component);
+    public Game(GameScene scene){
+        components.add(scene);
         generateWindow();
     }
 
     /**Constructs a game with the passed objects
      * 
-     * @param components The list of components the game will be constructed with
+     * @param scenes The list of scenes the game will be constructed with
     */
-    public Game(Collection<? extends GameComponent> components){
-        for(GameComponent c : components){
-            this.components.add(c);
+    public Game(Collection<? extends GameScene> scenes){
+        for(GameScene c : scenes){
+            this.scenes.add(c);
         }
         generateWindow();
     }
@@ -85,12 +89,12 @@ public class Game extends JPanel{
     /**Constructs a game with the passed objects
      * 
      * @param windowSize Size of the game window
-     * @param components The list of components the game will be constructed with
+     * @param scenes The list of scenes the game will be constructed with
     */
-    public Game(int[] windowSize, Collection<? extends GameComponent> components){
+    public Game(int[] windowSize, Collection<? extends GameScene> scenes){
         this.windowSize = windowSize;
-        for(GameComponent c : components){
-            this.components.add(c);
+        for(GameScene c : scenes){
+            this.scenes.add(c);
         }
         generateWindow();
     }
@@ -98,11 +102,11 @@ public class Game extends JPanel{
     /**Constructs a game with the passed objects
      * 
      * @param windowSize Size of the game window
-     * @param component The list of component the game will be constructed with
+     * @param scenes The scenes the game will be constructed with
     */
-    public Game(int[] windowSize, GameComponent component){
+    public Game(int[] windowSize, GameScene scene){
         this.windowSize = windowSize;
-        components.add(component);
+        scenes.add(scene);
         generateWindow();
     }
     
@@ -110,35 +114,35 @@ public class Game extends JPanel{
 
     // Setters
 
-    /** Adds a new component to the window
+    /** Adds a new scene to the window
      * 
-     * @param component The new component to add
+     * @param scene The new scene to add
      * @return Current Game object
      */
-    public Game addComponent(GameComponent component){
-        components.add(component);
+    public Game addScene(GameScene scene){
+        scenes.add(scene);
         return this;
     }
 
-    /** Adds new components to the window
+    /** Adds new scenes to the window
      * 
-     * @param component The new components to add
+     * @param scenes The new scenes to add
      * @return Current Game object
      */
-    public Game addComponents(Collection<? extends GameComponent> components){
-        for(GameComponent c : components){
-            this.components.add(c);
+    public Game addScenes(Collection<? extends GameScene> scenes){
+        for(GameScene c : scenes){
+            this.scenes.add(c);
         }
         return this;
     }
 
-    /** Adds new components to the window
+    /** Adds new scenes to the window
      * 
-     * @param component The new components to add
+     * @param scenes The new scenes to add
      * @return Current Game object
      */
-    public Game addComponents(GameComponent... components){
-        for(GameComponent c : components){
+    public Game addScenes(GameScene... scenes){
+        for(GameScene c : components){
             this.components.add(c);
         }
         return this;
@@ -192,11 +196,14 @@ public class Game extends JPanel{
         keyBoard = new KeyBoard(window);
         keyBoard.run();
 
+				// Set current scene
+				currentScene = scenes.get(0);
+
         // Boiler plate JFrame setup
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setSize(windowSize[0],windowSize[1]);
-		window.add(this);
-		window.setVisible(true);
+				window.setSize(windowSize[0],windowSize[1]);
+				window.add(this);
+				window.setVisible(true);
     }
 
     /** Takes in two components and returns if they collide using AABB detection
