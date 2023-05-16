@@ -23,9 +23,9 @@ public class GameScene{
   *
 	* @param components Compononents to build with
   */
-	public GameScene(Collection<? extends GameComponent> components){
+	public GameScene(Collection<GameComponent> components){
 		for(GameComponent c : components){
-			this.components.add(components);
+			this.components.add(c);
 		}
 	}
 
@@ -35,7 +35,7 @@ public class GameScene{
   */
 	public GameScene(GameComponent... components){
 		for(GameComponent c : components){
-			this.components.add(components);
+			this.components.add(c);
 		}
 	}
 
@@ -43,7 +43,7 @@ public class GameScene{
 	/** Returns all current components in scene
   * @return ArrayLits contaning components
   */
-	public ArrayList<GameComponent> getComponenets(){
+	public ArrayList<GameComponent> getComponents(){
 		return components;
 	}
 
@@ -52,8 +52,8 @@ public class GameScene{
  	* @param component New Component to add
 	* @return Current GameScene object
   */
-	public GameScene addComponent(GameComponenet component){
-		componenets.add(component);
+	public GameScene addComponent(GameComponent component){
+		components.add(component);
 		return this;
 	}
 
@@ -61,9 +61,9 @@ public class GameScene{
   * @param componenets Collection of all components to add
 	* @return Current GameScene object
  	*/
-	public GameScene addComponents(Collection<? extends GameComponent> components){
+	public GameScene addComponents(Collection<GameComponent> components){
 		for(GameComponent c : components){
-			this.components.add(components);
+			this.components.add(c);
 		}
 		return this;
 	}
@@ -74,7 +74,7 @@ public class GameScene{
  	*/
 	public GameScene addComponents(GameComponent... components){
 		for(GameComponent c : components){
-			this.components.add(components);
+			this.components.add(c);
 		}
 		return this;
 	}

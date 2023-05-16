@@ -71,7 +71,7 @@ public class Game extends JPanel{
      * @param scene The level the game will start with
     */
     public Game(GameScene scene){
-        components.add(scene);
+        scenes.add(scene);
         generateWindow();
     }
 
@@ -142,11 +142,36 @@ public class Game extends JPanel{
      * @return Current Game object
      */
     public Game addScenes(GameScene... scenes){
-        for(GameScene c : components){
-            this.components.add(c);
+        for(GameScene c : scenes){
+            this.scenes.add(c);
         }
         return this;
     }
+
+		/** Sets rendering scene to the passed one, If the scene has not been added to list it is automatically added
+		* @param scene GameScene you wish to render
+		* @return Current Game object
+		*/
+		public Game setScene(GameScene scene){
+			// Check if scene exsists
+			if(scenes.contains(scene)){
+				currentScene = scene;
+			}
+			else{
+				scenes.add(scene);
+				currentScene = scene;
+			}
+		}
+
+		/** Sets the scene to the number passed
+		* @param ID Index of the scene, 0 - N scenes
+		* @return Current Game object
+		*/
+		public Game setScene(int ID){
+			if(ID >= 0 && ID < scenes.size()){
+				currentScene = scenes.get(ID);
+			}
+		}
 
     // Overrided method that is called by default by a the JFrame
     @Override
@@ -172,7 +197,7 @@ public class Game extends JPanel{
         AffineTransform AffineTransform = g2d.getTransform();
 
         // Loop through all components and draw them to the screen
-        for(GameComponent component : components){
+        for(GameComponent component : currentScene.getComponents()){
             // Check if were rendering an image or basic shape
             if(component.getSprite() == null){
                 g2d.setColor(component.getColor());
