@@ -1,14 +1,18 @@
 package src;
+
 // Imports
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import lib.KeyBoard;
 
 /** A custom designed 2D game devolpment API. Proritizing ease of use. 
  * 
@@ -21,8 +25,10 @@ public class Game extends JPanel{
     private int[] windowSize = {100,100};
     private JFrame window;
     private Color windowBackGroundColor = new Color(255,255,255);
-    // Custom class designed for game use
-    //private SettingsLoader settingsLoader = new SettingsLoader();
+    // Class designed for game use
+    // private SettingsLoader settingsLoader = new SettingsLoader();
+    // Class to log keystrokes
+    KeyBoard keyBoard; 
 
     // Constructors
     public Game(){
@@ -35,6 +41,12 @@ public class Game extends JPanel{
      */
     public Game(String text){
         window = new JFrame(text);
+
+        // Start logging key strokes
+        keyBoard = new KeyBoard(window);
+        keyBoard.run();
+
+        // Boiler plate JFrame setup
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setSize(windowSize[0],windowSize[1]);
 		window.add(this);
@@ -113,7 +125,19 @@ public class Game extends JPanel{
      * @param component The new components to add
      * @return Current Game object
      */
-    public Game addComponent(Collection<? extends GameComponent> components){
+    public Game addComponents(Collection<? extends GameComponent> components){
+        for(GameComponent c : components){
+            this.components.add(c);
+        }
+        return this;
+    }
+
+    /** Adds new components to the window
+     * 
+     * @param component The new components to add
+     * @return Current Game object
+     */
+    public Game addComponents(GameComponent... components){
         for(GameComponent c : components){
             this.components.add(c);
         }
@@ -144,11 +168,9 @@ public class Game extends JPanel{
         AffineTransform AffineTransform = g2d.getTransform();
 
         // Loop through all components and draw them to the screen
-        System.out.println(components.get(0).getSprite());
         for(GameComponent component : components){
             // Check if were rendering an image or basic shape
             if(component.getSprite() == null){
-                System.out.println("fuck");
                 g2d.setColor(component.getColor());
 
                 // Draw shape on screen
@@ -165,9 +187,42 @@ public class Game extends JPanel{
     // Method that generates the window
     private void generateWindow(){
         window = new JFrame();
+
+        // Start logging key strokes
+        keyBoard = new KeyBoard(window);
+        keyBoard.run();
+
+        // Boiler plate JFrame setup
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setSize(windowSize[0],windowSize[1]);
 		window.add(this);
 		window.setVisible(true);
+    }
+
+    /** Takes in two components and returns if they collide using AABB detection
+     * 
+     * @param component1 
+     * @param component2
+     * @return True if they collide, false otherwise
+     */
+    public boolean componentsCollide(GameComponent component1, GameComponent component2){
+        // Get bounding boxes
+        Rectangle bounds1 = component1.getShape().getBounds();
+        Rectangle bounds2 = component2.getShape().getBounds();
+
+        // AABB detection
+        boolean xCollision = bounds1.x < bounds2.x + bounds2.width && bounds1.x + bounds1.width > bounds2.x;
+        boolean yCollision = bounds1.y < bounds2.y + bounds2.height && bounds1.y + bounds2.height > bounds2.y;
+
+        return xCollision && yCollision;
+    }
+
+    /** Returns if the given key is being pressed
+     * 
+     * @param keyEventID KeyEvent int ID number
+     * @return True if key is pressed down, false otherwise
+     */
+    public boolean isKeyPressed(int keyEventID){
+        return keyBoard.isKeyPressed(keyEventID);
     }
 }
