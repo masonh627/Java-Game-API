@@ -41,20 +41,20 @@ public class Game extends JPanel{
      * @param text The text of the window
      */
     public Game(String text){
-			window = new JFrame(text);
+        window = new JFrame(text);
 
-			// Start logging key strokes
-			keyBoard = new KeyBoard(window);
-			keyBoard.run();
+        // Start logging key strokes
+        keyBoard = new KeyBoard(window);
+        keyBoard.run();
 
-			// Set current scene
-			currentScene = scenes.get(0);
+        // Set current scene
+        currentScene = scenes.get(0);
 
-			// Boiler plate JFrame setup
-			window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			window.setSize(windowSize[0],windowSize[1]);
-			window.add(this);
-			window.setVisible(true);
+        // Boiler plate JFrame setup
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setSize(windowSize[0],windowSize[1]);
+        window.add(this);
+        window.setVisible(true);
     } 
 
     /** Creates a game that has a window size of the dimensions passed
@@ -148,30 +148,32 @@ public class Game extends JPanel{
         return this;
     }
 
-		/** Sets rendering scene to the passed one, If the scene has not been added to list it is automatically added
-		* @param scene GameScene you wish to render
-		* @return Current Game object
-		*/
-		public Game setScene(GameScene scene){
-			// Check if scene exsists
-			if(scenes.contains(scene)){
-				currentScene = scene;
-			}
-			else{
-				scenes.add(scene);
-				currentScene = scene;
-			}
-		}
+    /** Sets rendering scene to the passed one, If the scene has not been added to list it is automatically added
+    * @param scene GameScene you wish to render
+    * @return Current Game object
+    */
+    public Game setScene(GameScene scene){
+        // Check if scene exsists
+        if(scenes.contains(scene)){
+            currentScene = scene;
+        }
+        else{
+            scenes.add(scene);
+            currentScene = scene;
+        }
+        return this;
+    }
 
-		/** Sets the scene to the number passed
-		* @param ID Index of the scene, 0 - N scenes
-		* @return Current Game object
-		*/
-		public Game setScene(int ID){
-			if(ID >= 0 && ID < scenes.size()){
-				currentScene = scenes.get(ID);
-			}
-		}
+    /** Sets the scene to the number passed
+    * @param ID Index of the scene, 0 - N scenes
+    * @return Current Game object
+    */
+    public Game setScene(int ID){
+        if(ID >= 0 && ID < scenes.size()){
+            currentScene = scenes.get(ID);
+        }
+        return this;
+    }
 
     // Overrided method that is called by default by a the JFrame
     @Override
@@ -202,6 +204,7 @@ public class Game extends JPanel{
             if(component.getSprite() == null){
                 g2d.setColor(component.getColor());
 
+
                 // Draw shape on screen
                 g2d.rotate(component.getRotation());
                 g2d.fill(component.getShape());
@@ -221,14 +224,14 @@ public class Game extends JPanel{
         keyBoard = new KeyBoard(window);
         keyBoard.run();
 
-				// Set current scene
-				currentScene = scenes.get(0);
+        // Set current scene
+        currentScene = scenes.get(0);
 
         // Boiler plate JFrame setup
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				window.setSize(windowSize[0],windowSize[1]);
-				window.add(this);
-				window.setVisible(true);
+        window.setSize(windowSize[0],windowSize[1]);
+        window.add(this);
+        window.setVisible(true);
     }
 
     /** Takes in two components and returns if they collide using AABB detection
