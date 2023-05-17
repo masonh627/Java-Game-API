@@ -98,7 +98,13 @@ public class GameComponent {
      * @return Current GameComponent
      */
     public GameComponent setRotation(int degree){
-        this.rotation = degree;
+        // we do some math to validate degree
+        if(degree >= 360){
+            rotation = degree - (degree / 360) * 360;
+        }
+        else if(degree < 0){
+            
+        }
         return this;
     }
 
